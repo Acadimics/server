@@ -1,0 +1,18 @@
+.data-update-app .fields .field {
+    display: flex;
+    flex-direction: column;
+
+    .ant-card-head {
+        .buttons {
+            float: right;
+            button {
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .ant-card-body {
+        overflow: auto;
+        flex: 1;
+    }
+}

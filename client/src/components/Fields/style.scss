@@ -1,0 +1,20 @@
+.data-update-app .fields {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    > div {
+        flex: 1;
+        overflow: auto;
+        .cards-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .ant-card {
+            width: 300px;
+            margin: 5px;
+            max-height: 147px;
+        }
+    }
+}

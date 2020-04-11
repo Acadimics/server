@@ -1,0 +1,56 @@
+{
+    "port": 8080,
+    "serviceURL": "https://server-v-1.herokuapp.com",
+    "baseAPIRoute": "/api",
+    "version": 1,
+    "APIs": [
+        {
+            "name": "getInstitutions",
+            "method": "get",
+            "serviceMethod": "post",
+            "uri": "institutions/getInstitutions"
+        },
+        {
+            "name": "createInstitution",
+            "serviceMethod": "post",
+            "uri": "institutions/createInstitution"
+        },
+        {
+            "name": "deleteInstitutions",
+            "serviceMethod": "post",
+            "uri": "institutions/deleteInstitutions"
+        },
+        {
+            "name": "updateInstitution",
+            "serviceMethod": "post",
+            "uri": "institutions/updateInstitutions"
+        },
+        {
+            "name": "getFields",
+            "method": "get",
+            "serviceMethod": "post",
+            "uri": "fields/getFields"
+        },
+        {
+            "name": "getConstraints",
+            "method": "get",
+            "serviceMethod": "post",
+            "uri": "constraints/getConstraints"
+        },
+        {
+            "name": "createFields",
+            "serviceMethod": "post",
+            "uri": "fields/createFields"
+        },
+        {
+            "name": "updateFields",
+            "serviceMethod": "post",
+            "uri": "fields/updateFields"
+        },
+        {
+            "name": "removeField",
+            "serviceMethod": "post",
+            "uri": "fields/removeField"
+        }
+    ]
+}

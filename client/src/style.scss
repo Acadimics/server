@@ -1,0 +1,16 @@
+#root {
+    height: 100%;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-select-disabled input {
+    cursor: default !important;
+}
+
+.ant-btn[disabled] {
+    cursor: default;
+}

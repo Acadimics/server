@@ -1,0 +1,18 @@
+.ant-modal .ant-modal-body .add-constrain-form {
+
+    > .ant-row {
+        &:last-child {
+            margin-top: auto;
+            margin-bottom: 0;
+
+            .submit-btn {
+                margin-top: 10px;
+                margin-left: auto;
+            }
+        }
+    }
+
+    .ant-form-item-control {
+        flex: 1;
+    }
+}

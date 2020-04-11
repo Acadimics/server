@@ -1,0 +1,22 @@
+.ant-modal .ant-modal-body .field-add-institution {
+
+    > .ant-row {
+        &:last-child {
+            margin-top: auto;
+            margin-bottom: 0;
+
+            .submit-btn {
+                margin-top: 10px;
+                margin-left: auto;
+            }
+        }
+    }
+
+    .requirements {
+        .selector {
+            .ant-form-item-control {
+                flex: 1;
+            }
+        }
+    }
+}

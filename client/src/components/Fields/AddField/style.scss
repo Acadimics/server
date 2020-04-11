@@ -1,0 +1,79 @@
+.ant-modal .ant-modal-body {
+
+    header {
+        background-color: white;
+        padding: 0; 
+
+        .ant-form-item-control {
+            flex: 1;
+        }
+    }
+
+    .institutions {
+        min-height: 200px;
+
+        aside {
+            background-color: lightgray;
+
+            .ant-row {
+                margin: 0;
+                width: 100%;
+        
+                &:last-child {
+                    position: absolute;
+                    bottom: 0;
+                    margin: 0;
+                }
+            }
+        }
+        
+        .ant-collapse-extra {
+            button {
+                margin-left: 10px;
+            }
+        }
+    }
+
+    footer {
+        background-color: white;
+        padding: 0;
+
+        > div {
+            margin: 0;
+
+            button {
+                margin-left: auto;
+            }
+        }
+    }
+
+    .ant-form-item-control-input-content {
+        -webkit-box-flex: 1;
+        -ms-flex: auto;
+        flex: auto;
+        max-width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .ant-row {
+            flex: 1;
+            padding-right: 5px;
+        }
+
+        .dynamic-delete-button {
+            cursor: pointer;
+            position: relative;
+            top: 4px;
+            font-size: 24px;
+            color: #999;
+            transition: all 0.3s;
+        }
+        .dynamic-delete-button:hover {
+            color: #777;
+        }
+        .dynamic-delete-button[disabled] {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    }
+}

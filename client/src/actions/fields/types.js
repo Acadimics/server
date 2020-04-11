@@ -1,0 +1,5 @@
+export const FETCH_FIELDS = 'FETCH_FIELDS';
+export const FETCH_CONSTRAINS = 'FETCH_CONSTRAINS';
+export const CREATE_FIELD = 'CREATE_FIELD';
+export const UPDATE_FIELD = 'UPDATE_FIELD';
+export const REMOVE_FIELD = 'REMOVE_FIELD';

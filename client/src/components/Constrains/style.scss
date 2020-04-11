@@ -1,0 +1,28 @@
+.data-update-app .constrains {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .header {
+        margin-bottom: 0;
+
+        .sub.header button{
+            margin-top: 10px;
+        }
+    }
+
+    > div {
+        flex: 1;
+        overflow: auto;
+        .cards-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -5px;
+        }
+
+        .ant-card {
+            width: 300px;
+            margin: 5px;
+        }
+    }
+}
