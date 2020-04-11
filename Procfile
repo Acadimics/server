@@ -1,1 +1,1 @@
-web: node src/index.js && npm run dataUpdate
+web: npm run dataUpdate
