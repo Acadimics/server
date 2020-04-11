@@ -24,7 +24,7 @@ function addConstraint(req, res) {
 
 function updateConstraint(req, res) {
     var body = req.body;
-    Logger.debug(TAG, "addConstraint", body);
+    Logger.debug(TAG, "updateConstraint", body);
 
     var query = { "_id": body._id };
 
@@ -41,14 +41,12 @@ function updateConstraint(req, res) {
 
 function removeConstraint(req, res) {
     var body = req.body;
-    Logger.debug(TAG, "addConstraint", body);
+    Logger.debug(TAG, "removeConstraint", body);
 
-    var newConstraint = {};
-    newConstraint.description = body.description;
-    newConstraint.scoop = body.scoop;
+    var query = { "_id": body._id };
 
-    db.removeConstraint(newConstraint).then((doc) => {
-        res.send(doc);
+    db.removeConstraint(query).then(() => {
+        res.send(body);
     }).catch((err) => {
         res.send(err);
     });
