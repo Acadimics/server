@@ -3,9 +3,9 @@ var Schema = mongoose.Schema;
 
 var ConstraintSchema = new Schema(
     {
-        name: { type: String, required: true },
+        description: { type: String, required: true },
         scoop: { type: String, required: true },
-        description: String
+        name: { type: String }
     },
     { collection: "Constraints" }
 );

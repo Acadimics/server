@@ -271,21 +271,16 @@ function getFieldsListByKey(query, successFunc, failureFunc) {
 
 
 // Constraints
-function getConstraintsList(successFunc, failureFunc) {
 
-	Constraint.find({},
-		(err, docs) => {
-			if (err) {
-				console.log(err);
+const addConstraint = async (newConstraint) => await Constraint.create(newConstraint);
 
-			}
-			else {
-				console.log(docs);
-				successFunc(docs);
-			}
-		});
-};
+const updateConstraint = async (query, constraint) =>
+	await Constraint.updateOne(query, constraint);
 
+const getConstraintsList = async () => await Constraint.find({});
+
+
+// Exports
 module.exports.createInstitution = createInstitution;
 module.exports.getInstitutionsList = getInstitutionsList;
 module.exports.updateInstitutions = updateInstitutions;
@@ -303,4 +298,6 @@ module.exports.updateFields = updateFields;
 module.exports.removeField = removeField;
 module.exports.removeFieldInstitutions = removeFieldInstitutions;
 
+module.exports.addConstraint = addConstraint;
+module.exports.updateConstraint = updateConstraint;
 module.exports.getConstraintsList = getConstraintsList;

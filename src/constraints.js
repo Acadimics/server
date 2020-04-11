@@ -7,26 +7,74 @@ const Network = require('./Network.js');
 const TAG = "Constraints";
 constraints.use(bodyParser.json());
 
+function addConstraint(req, res) {
+    var body = req.body;
+    Logger.debug(TAG, "addConstraint", body);
+
+    var newConstraint = {};
+    newConstraint.description = body.description;
+    newConstraint.scoop = body.scoop;
+
+    db.addConstraint(newConstraint).then((doc) => {
+        res.send(doc);
+    }).catch((err) => {
+        res.send(err);
+    });
+};
+
+function updateConstraint(req, res) {
+    var body = req.body;
+    Logger.debug(TAG, "addConstraint", body);
+
+    var query = { "_id": body._id };
+
+    var newConstraint = {};
+    newConstraint.description = body.description;
+    // newConstraint.scoop = body.scoop;
+
+    db.updateConstraint(query, newConstraint).then(() => {
+        res.send(body);
+    }).catch((err) => {
+        res.send(err);
+    });
+};
+
+function removeConstraint(req, res) {
+    var body = req.body;
+    Logger.debug(TAG, "addConstraint", body);
+
+    var newConstraint = {};
+    newConstraint.description = body.description;
+    newConstraint.scoop = body.scoop;
+
+    db.removeConstraint(newConstraint).then((doc) => {
+        res.send(doc);
+    }).catch((err) => {
+        res.send(err);
+    });
+};
+
 function getConstraintsList(req, res) {
     var body = req.body;
     Logger.debug(TAG, "getInstitutionsList", body);
-    db.getConstraintsList(
-        (list) => {
-            var response = {
-                "count": list.length,
-                "items": list
-            };
 
-            res.status(Network.CODE_OK);
-            res.send(response);
-        },
-        (err) => {
-            res.status(Network.CODE_ERROR);
-            res.send("ERROR");
-        }
-    );
+    db.getConstraintsList().then((docs) => {
+        var response = {
+            "count": docs.length,
+            "items": docs
+        };
+
+        res.status(Network.CODE_OK);
+        res.send(response);
+    }).catch((err) => {
+        res.status(Network.CODE_ERROR);
+        res.send(err);
+    });
 };
 
+constraints.post('/addConstraint', addConstraint);
+constraints.post('/removeConstraint', removeConstraint);
+constraints.post('/updateConstraint', updateConstraint);
 constraints.post('/getConstraints', getConstraintsList);
 
 module.exports = constraints;
