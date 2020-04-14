@@ -10,4 +10,14 @@ var ConstraintSchema = new Schema(
     { collection: "Constraints" }
 );
 
+// var startTime;
+
+// ConstraintSchema.pre("find", (x) => {
+//     startTime = Date.now();
+// });
+
+// ConstraintSchema.post('find', () => {
+//     console.log(`${Date.now() - startTime}ms`);
+// });
+
 module.exports = mongoose.model('Constraint', ConstraintSchema);

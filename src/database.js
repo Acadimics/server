@@ -17,6 +17,8 @@ const TAG = "Database";
 
 console.log("Connecting to Database...");
 mongoose.connect(databaseURL, { useUnifiedTopology: true, useNewUrlParser: true, dbName: dbName });
+// mongoose.set('debug', { color: true })
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
@@ -135,7 +137,7 @@ function getInstitutionsList(query, successFunc, failureFunc) {
 			else {
 				successFunc(docs);
 			}
-		});
+		}).sort({ name: 'asc' });
 };
 
 
@@ -250,7 +252,7 @@ const getFieldsList = async (query) =>
 					}
 				}
 			}
-		}]);
+		}]).sort({ name: 'asc' });
 
 function getFieldsListByKey(query, successFunc, failureFunc) {
 
@@ -281,7 +283,7 @@ const updateConstraint = async (query, constraint) =>
 const removeConstraint = async (query) =>
 	await Constraint.deleteMany(query);
 
-const getConstraintsList = async () => await Constraint.find({});
+const getConstraintsList = async () => await Constraint.find({}).sort({ description: 'asc' });
 
 
 // Exports

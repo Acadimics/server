@@ -13,15 +13,15 @@ Logger.setHandler((msg, context) => {
 });
 
 function debug(tag, func, info) {
-    Logger.debug(`[${tag}] [${func}]`, '\n\t', info);
+    Logger.debug(`[${tag}] [${func}]`, JSON.stringify(info));
 }
 
 function info(tag, func, info) {
-    Logger.info(`[${tag}] [${func}]`, '\n\t', info);
+    Logger.info(`[${tag}] [${func}]`, JSON.stringify(info));
 }
 
 function error(tag, func, info) {
-    Logger.error(`[${tag}] [${func}]`, '\n\t', info);
+    Logger.error(`[${tag}] [${func}]`, JSON.stringify(info));
 }
 
 module.exports.debug = debug;

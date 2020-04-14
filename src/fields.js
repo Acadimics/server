@@ -12,7 +12,7 @@ fields.use(bodyParser.json());
 
 function createFields(req, res) {
     var body = req.body;
-    Logger.debug(TAG, "Body", body);
+    Logger.debug(TAG, "createFields", body);
 
     if (!body['fieldKey']) {
         var name = body.name
@@ -56,7 +56,7 @@ function createFields(req, res) {
 
 function updateFields(req, res) {
     var body = req.body;
-    Logger.debug(TAG, "Body", body);
+    Logger.debug(TAG, "updateFields", body);
     var fieldKey = body.fieldKey;
     var institutions = body.institutions;
 
