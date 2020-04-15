@@ -8,6 +8,7 @@ const Constraint = require('./constraint');
 const Institution = require('./institution');
 const Field = require('./field');
 const FieldId = require('./fieldId');
+const Bagruts = require('./bagrut');
 
 const user = encodeURIComponent('admin');
 const password = encodeURIComponent('a102030kh__');
@@ -286,6 +287,15 @@ const removeConstraint = async (query) =>
 const getConstraintsList = async () => await Constraint.find({}).sort({ description: 'asc' });
 
 
+// Bagruts
+const setBagruts = async (bagruts) => {
+	await Bagruts.insertMany(bagruts)
+}
+
+const getBagruts = () => {
+	return Bagruts.find({});
+}
+
 // Exports
 module.exports.createInstitution = createInstitution;
 module.exports.getInstitutionsList = getInstitutionsList;
@@ -308,3 +318,6 @@ module.exports.addConstraint = addConstraint;
 module.exports.updateConstraint = updateConstraint;
 module.exports.removeConstraint = removeConstraint;
 module.exports.getConstraintsList = getConstraintsList;
+
+module.exports.setBagruts = setBagruts;
+module.exports.getBagruts = getBagruts;

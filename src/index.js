@@ -9,10 +9,12 @@ app.use(bodyParser.json()); // for parsing application/json
 const institutions = require('./institutions.js');
 const fields = require('./fields.js');
 const constraints = require('./constraints.js');
+const bagruts = require('./bagruts.js');
 
 app.use('/institutions', institutions);
 app.use('/fields', fields);
 app.use('/constraints', constraints);
+app.use('/bagruts', bagruts);
 
 function main(req, res) {
   console.log('recevied post method');
