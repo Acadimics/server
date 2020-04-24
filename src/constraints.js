@@ -14,6 +14,7 @@ function addConstraint(req, res) {
     var newConstraint = {};
     newConstraint.description = body.description;
     newConstraint.scoop = body.scoop;
+    newConstraint.subjectId = body.subjectId;
 
     db.addConstraint(newConstraint).then((doc) => {
         res.send(doc);
