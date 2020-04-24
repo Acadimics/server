@@ -1,7 +1,6 @@
 const mongodb = require('mongodb');
 const mongoose = require('mongoose');
 
-ObjectID = require('mongodb').ObjectID
 const Logger = require('./logger');
 const Network = require('./Network.js');
 const Constraint = require('./constraint');
@@ -40,7 +39,7 @@ const createInstitution = async (newDocument) => {
 
 const updateInstitutions = async (id, newData) => {
 	Logger.debug(TAG, "updateInstitutions", `id: ${id}`, newData);
-	var query = { "_id": new ObjectID(id) };
+	var query = { _id: id };
 
 	return await Institution.updateOne(query, { $set: newData });
 };
