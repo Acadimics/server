@@ -31,7 +31,9 @@ function updateConstraint(req, res) {
 
     var newConstraint = {};
     newConstraint.description = body.description;
-    // newConstraint.scoop = body.scoop;
+    newConstraint.scoop = body.scoop;
+    newConstraint.subjectId = body.subjectId;
+    newConstraint.name = body.name;
 
     db.updateConstraint(query, newConstraint).then(() => {
         res.send(body);
