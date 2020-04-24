@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const Logger = require('./logger');
 const db = require('./database.js');
 const Network = require('./Network.js');
+const FieldId = require('./fieldId');
 
 const TAG = "Fields";
 
@@ -19,29 +20,27 @@ function createFields(req, res) {
         var institutions = body.institutions
         var fieldKey = uuidv4();
 
-        var newDocument = {
-            'name': name,
-            'fieldKey': fieldKey
-        };
+        const newFieldId = new FieldId();
+        newFieldId.name = name;
+        newFieldId.fieldKey = newDocument.fieldKey;
 
-        db.createFieldKey(newDocument)
+        db.createFieldKey(newFieldId)
             .then(() => {
-                var arr = [];
+                var fieldsList = [];
                 institutions.forEach((item) => {
-                    var newField = {};
+                    const newField = new Field();
                     newField.name = name;
                     newField.institutionId = item.institutionId;
                     newField.fieldKey = fieldKey;
                     newField.requirements = item.requirements;
 
-                    arr.push(newField);
+                    fieldsList.push(newField);
                 });
 
                 db.createFields(arr).then(() => {
-                    var response = {
+                    res.send({
                         "fieldKey": fieldKey
-                    }
-                    res.send(response);
+                    });
                 }).catch((err) => { res.send(err) });
             }).catch((err) => {
                 res.send(err);

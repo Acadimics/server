@@ -67,56 +67,27 @@ function getInstitutionsList(query, successFunc, failureFunc) {
 
 
 // Fields
-const createFieldKey = async (newDocument) => {
-	var newFieldId = new FieldId();
-	newFieldId.name = newDocument.name;
-	newFieldId.fieldKey = newDocument.fieldKey;
+const createFieldKey = async (newFieldId) =>
+	await FieldId.create(newFieldId)
 
-	return await newFieldId.save();
-};
+const removeFieldKey = async (query) =>
+	await FieldId.deleteMany(query);
 
-const removeFieldKey = async (query) => {
-	return await FieldId.deleteMany(query);
-};
+const createField = async (newField) =>
+	await Field.create(newField);
 
-const createField = async (newField) => {
-	const field = new Field();
-	field.name = newField.name;
-	field.institutionId = newField.institutionId;
-	field.fieldKey = newField.fieldKey;
-	field.requirements = newField.requirements;
-
-	return await field.save();
-};
-
-const createFields = async (fieldsList) => {
-	var fieldsSchema = [];
-	fieldsList.forEach(element => {
-		const newField = new Field();
-		newField.name = element.name;
-		newField.institutionId = element.institutionId;
-		newField.fieldKey = element.fieldKey;
-		newField.requirements = element.requirements;
-
-		fieldsSchema.push(newField);
-	});
-
-	return await Field.insertMany(fieldsSchema);
-};
+const createFields = async (fieldsList) =>
+	await Field.insertMany(fieldsList);
 
 const updateFields = async (query, fieldsList) => {
-	console.log("Query", query);
-
 	var fieldsSchema = [];
 	fieldsList.forEach(element => {
-		// const updateField = new Field();
-		// updateField.requirements = element.requirements;
 		var updateField = { "$set": { "requirements": element.requirements } };
 		fieldsSchema.push(updateField);
 	});
 
 	return await Field.updateMany(query, fieldsSchema);
-}
+};
 
 function updateField(query, field) {
 	console.log("updateField");
@@ -179,8 +150,7 @@ function getFieldsListByKey(query, successFunc, failureFunc) {
 
 
 // Constraints
-
-const addConstraint = async (newConstraint) =>
+const createConstraint = async (newConstraint) =>
 	await Constraint.create(newConstraint);
 
 const updateConstraint = async (query, constraint) =>
@@ -189,7 +159,8 @@ const updateConstraint = async (query, constraint) =>
 const removeConstraint = async (query) =>
 	await Constraint.deleteMany(query);
 
-const getConstraintsList = async () => await Constraint.find({}).sort({ description: 'asc' });
+const getConstraintsList = async () =>
+	await Constraint.find({}).sort({ description: 'asc' });
 
 
 // Bagruts
@@ -217,7 +188,7 @@ module.exports.updateFields = updateFields;
 module.exports.removeField = removeField;
 module.exports.removeFieldInstitutions = removeFieldInstitutions;
 
-module.exports.addConstraint = addConstraint;
+module.exports.createConstraint = createConstraint;
 module.exports.updateConstraint = updateConstraint;
 module.exports.removeConstraint = removeConstraint;
 module.exports.getConstraintsList = getConstraintsList;
