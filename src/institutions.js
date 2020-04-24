@@ -14,14 +14,12 @@ function createInstitution(req, res) {
     var query = {};
     query['name'] = body.name;
 
-    db.createInstitution(query, body,
-        (code, id) => {
-            res.status(code);
+    db.createInstitution(body)
+        .then((doc) => {
             res.send({
-                "id": id
+                "_id": doc._id
             });
-        },
-        (err) => {
+        }).catch((err) => {
             res.status(Network.CODE_ERROR);
             res.send(err);
         });
@@ -36,30 +34,28 @@ function updateInstitutions(req, res) {
     newData['locations'] = body.locations;
     newData['logo'] = body.logo;
 
-    db.updateInstitutions(body.id, newData,
-        () => {
+    db.updateInstitutions(body.id, newData)
+        .then(() => {
             res.status(Network.CODE_OK);
-            res.send({});
-        },
-        (err) => {
+            res.send({ _id: body.id });
+        }).catch((err) => {
             res.status(Network.CODE_ERROR);
             res.send(err);
-        });
+        })
 };
 
 function deleteInstitutions(req, res) {
     var body = req.body;
     Logger.debug(TAG, "deleteInstitutions", body);
 
-    db.deleteInstitutions(body.id,
-        () => {
+    db.deleteInstitutions(body.id)
+        .then(() => {
             res.status(Network.CODE_OK);
             res.send({});
-        },
-        (err) => {
+        }).catch((err) => {
             res.status(Network.CODE_ERROR);
             res.send(err);
-        });
+        })
 };
 
 function getInstitutions(req, res) {

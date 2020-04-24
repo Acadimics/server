@@ -26,106 +26,30 @@ db.once('open', function () {
 	console.log("Database is connected!");
 });
 
-// Utils functions
-function connectToCollection(collectionName, successFunc, failureFunc) {
-	var client = mongodb.MongoClient;
-
-	client.connect(databaseURL, { useUnifiedTopology: true, useNewUrlParser: true }, (err, db) => {
-		if (err) {
-			failureFunc(err);
-			return;
-		}
-
-		var dbo = db.db(dbName);
-		var collection = dbo.collection(collectionName);
-
-		successFunc(collection);
-		db.close();
-	});
-};
-
-function connectToInstitutionsCollection(successFunc, failureFunc) {
-	connectToCollection('Institutions', successFunc, failureFunc);
-};
-
-function connectToFieldsIdCollection(successFunc, failureFunc) {
-	connectToCollection('FieldsId', successFunc, failureFunc);
-};
-
 
 // Institutions
-function createInstitution(query, newDocument, successFunc, failureFunc) {
-	var options = {
-		"upsert": true
-	};
-	connectToInstitutionsCollection(
-		(collection) => {
-			collection.updateOne(query, { $set: newDocument }, options).then(
-				(result) => {
-					const { matchedCount, modifiedCount, upsertedId } = result;
-					Logger.debug(TAG, "createInstitution", "matched", matchedCount, "modifiedCount", modifiedCount, "upsertedId", upsertedId);
+const createInstitution = async (newDocument) => {
+	const newInstitution = new Institution();
+	newInstitution.name = newDocument.name;
+	newInstitution.locations = newDocument.locations;
+	newInstitution.logo = newDocument.logo;
+	newInstitution.type = newDocument.type;
 
-					if (matchedCount) {
-						Logger.info(TAG, "createInstitution", "Institution already found.");
-						successFunc(Network.CODE_OK, null);
-					} else {
-						Logger.info(TAG, "createInstitution", "Successfully added a new institution.");
-						successFunc(Network.CODE_CREATED, upsertedId._id);
-					}
-				},
-				(err) => {
-					Logger.error(TAG, "createInstitution", err);
-					failureFunc(err);
-				});
-		},
-		(err) => {
-			Logger.error(TAG, "createInstitution", err);
-			failureFunc(err);
-		}
-	);
+	return await Institution.create(newInstitution);
 };
 
-function updateInstitutions(id, newData, successFunc, failureFunc) {
+const updateInstitutions = async (id, newData) => {
 	Logger.debug(TAG, "updateInstitutions", `id: ${id}`, newData);
 	var query = { "_id": new ObjectID(id) };
-	connectToInstitutionsCollection(
-		(collection) => {
-			collection.updateOne(query, { $set: newData }).then(
-				(result) => {
-					successFunc();
-				},
-				(err) => {
-					Logger.error(TAG, "updateInstitutions", err);
-					failureFunc(err);
-				});
-		},
-		(err) => {
-			Logger.error(TAG, "updateInstitutions", err);
-			failureFunc(err);
-		}
-	)
+
+	return await Institution.updateOne(query, { $set: newData });
 };
 
-function deleteInstitutions(id, successFunc, failureFunc) {
+const deleteInstitutions = async (id) => {
 	Logger.debug(TAG, "deleteInstitutions", `id: ${id}`);
 	var query = { "_id": new ObjectID(id) };
 
-	connectToInstitutionsCollection(
-		(collection) => {
-			collection.deleteOne(query).then(
-				(result) => {
-					successFunc();
-				},
-				(err) => {
-					Logger.error(TAG, "deleteInstitutions", err);
-					failureFunc(err);
-				}
-			);
-		},
-		(err) => {
-			rror(TAG, "deleteInstitutions", err);
-		}
-	);
+	return await Institution.deleteOne(query, { $set: newData });
 };
 
 function getInstitutionsList(query, successFunc, failureFunc) {
@@ -143,34 +67,16 @@ function getInstitutionsList(query, successFunc, failureFunc) {
 
 
 // Fields
-function createFieldKey(newDocument, successFunc, failureFunc) {
-	var options = {
-		"upsert": false
-	};
+const createFieldKey = async (newDocument) => {
+	var newFieldId = new FieldId();
+	newFieldId.name = newDocument.name;
+	newFieldId.fieldKey = newDocument.fieldKey;
 
-	connectToFieldsIdCollection(
-		(collection) => {
-			try {
-				collection.insertOne(newDocument).then(
-					(result) => {
-						successFunc();
-					},
-					(err) => {
-						failureFunc(err);
-					}
-				);
-			} catch (err) {
-				failureFunc(err);
-			}
-		},
-		(err) => {
-			failureFunc(err);
-		}
-	);
-}
+	return await newFieldId.save();
+};
 
 const removeFieldKey = async (query) => {
-	await FieldId.deleteMany(query)
+	return await FieldId.deleteMany(query);
 };
 
 const createField = async (newField) => {
@@ -180,7 +86,7 @@ const createField = async (newField) => {
 	field.fieldKey = newField.fieldKey;
 	field.requirements = newField.requirements;
 
-	await field.save();
+	return await field.save();
 };
 
 const createFields = async (fieldsList) => {
@@ -195,7 +101,7 @@ const createFields = async (fieldsList) => {
 		fieldsSchema.push(newField);
 	});
 
-	await Field.insertMany(fieldsSchema)
+	return await Field.insertMany(fieldsSchema);
 };
 
 const updateFields = async (query, fieldsList) => {
@@ -209,7 +115,7 @@ const updateFields = async (query, fieldsList) => {
 		fieldsSchema.push(updateField);
 	});
 
-	await Field.updateMany(query, fieldsSchema);
+	return await Field.updateMany(query, fieldsSchema);
 }
 
 function updateField(query, field) {
@@ -235,9 +141,8 @@ function removeFieldInstitutions(fieldKey, institutionsNotToRemoveList) {
 	})
 }
 
-const removeField = async (query) => {
-	await Field.deleteMany(query)
-};
+const removeField = async (query) =>
+	await Field.deleteMany(query);
 
 const getFieldsList = async (query) =>
 	await Field.aggregate([
@@ -288,13 +193,11 @@ const getConstraintsList = async () => await Constraint.find({}).sort({ descript
 
 
 // Bagruts
-const setBagruts = async (bagruts) => {
+const setBagruts = async (bagruts) =>
 	await Bagruts.insertMany(bagruts)
-}
 
-const getBagruts = () => {
-	return Bagruts.find({});
-}
+const getBagruts = () =>
+	Bagruts.find({});
 
 // Exports
 module.exports.createInstitution = createInstitution;

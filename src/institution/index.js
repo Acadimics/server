@@ -6,6 +6,7 @@ var InstitutionSchema = new Schema(
         name: { type: String, required: true },
         locations: [{ type: String, required: true }],
         logo: { type: String },
+        type: { type: String }
     },
     { collection: "Institutions" }
 );

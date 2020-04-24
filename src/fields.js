@@ -24,8 +24,8 @@ function createFields(req, res) {
             'fieldKey': fieldKey
         };
 
-        db.createFieldKey(newDocument,
-            () => {
+        db.createFieldKey(newDocument)
+            .then(() => {
                 var arr = [];
                 institutions.forEach((item) => {
                     var newField = {};
@@ -43,11 +43,9 @@ function createFields(req, res) {
                     }
                     res.send(response);
                 }).catch((err) => { res.send(err) });
-            },
-            (err) => {
+            }).catch((err) => {
                 res.send(err);
-            }
-        );
+            })
     } else {
         res.code = Network.ERROR_FIELD_ALREAD_CREATED;
         res.send("ERROR - Field already created");
