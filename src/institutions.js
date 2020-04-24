@@ -50,9 +50,13 @@ function deleteInstitutions(req, res) {
 
     db.deleteInstitutions(body.id)
         .then(() => {
+            Logger.debug(TAG, "deleteInstitutions:then");
             res.status(Network.CODE_OK);
-            res.send({});
+            res.send({
+                id: body.id
+            });
         }).catch((err) => {
+            Logger.debug(TAG, "deleteInstitutions:err", err);
             res.status(Network.CODE_ERROR);
             res.send(err);
         })

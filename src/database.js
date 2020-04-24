@@ -47,9 +47,9 @@ const updateInstitutions = async (id, newData) => {
 
 const deleteInstitutions = async (id) => {
 	Logger.debug(TAG, "deleteInstitutions", `id: ${id}`);
-	var query = { "_id": new ObjectID(id) };
+	var query = { _id: id };
 
-	return await Institution.deleteOne(query, { $set: newData });
+	return await Institution.deleteOne(query);
 };
 
 function getInstitutionsList(query, successFunc, failureFunc) {
