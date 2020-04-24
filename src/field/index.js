@@ -6,6 +6,7 @@ var FieldSchema = new Schema(
         institutionId: { type: String, required: true },
         name: { type: String, required: true },
         fieldKey: { type: String, required: true },
+        faculty: { type: String },
         requirements: {
             constraints: [{
                 constraintId: { type: String, required: true },

@@ -33,6 +33,7 @@ function createFields(req, res) {
                     newField.institutionId = item.institutionId;
                     newField.fieldKey = fieldKey;
                     newField.requirements = item.requirements;
+                    newField.faculty = item.faculty;
 
                     fieldsList.push(newField);
                 });
@@ -56,8 +57,16 @@ function updateFields(req, res) {
     Logger.debug(TAG, "updateFields", body);
     var fieldKey = body.fieldKey;
     var institutions = body.institutions;
+    var faculty = body.faculty;
+    var updateInstitutions = body.updateInstitutions;
 
-    if (fieldKey) {
+    if (!fieldKey) {
+        res.code = Network.ERROR_NO_FIELD_KEY;
+        res.send("ERROR - Field already created");
+        return;
+    }
+
+    if (updateInstitutions) {
         var institutionsNotToRemoveList = [];
 
         institutions.forEach((item) => {
@@ -67,22 +76,40 @@ function updateFields(req, res) {
             query['fieldKey'] = fieldKey;
 
             updateField.requirements = item.requirements;
-            db.updateField(query, updateField);
+            updateField.faculty = faculty;
+
+            db.updateField(query, updateField)
+                .then((doc) => {
+                    Logger.debug(TAG, "updateFields", doc._id);
+                })
+                .catch((err) => {
+                    Logger.error(TAG, "updateFields", err);
+                });
 
             institutionsNotToRemoveList.push(item.institutionId);
         });
+
         db.removeFieldInstitutions(fieldKey, institutionsNotToRemoveList);
+    } else {
+        var query = {};
+        query['fieldKey'] = fieldKey;
 
-        var response = {
-            "fieldKey": fieldKey
-        }
-        res.send(response);
-    }
-    else {
-        res.code = Network.ERROR_NO_FIELD_KEY;
-        res.send("ERROR - Field already created");
+        var updateField = {};
+        updateField.faculty = faculty;
+
+        db.updateField(query, updateField)
+            .then((doc) => {
+                Logger.debug(TAG, "updateFields");
+            })
+            .catch((err) => {
+                Logger.error(TAG, "updateFields", err);
+            });
     }
 
+    var response = {
+        "fieldKey": fieldKey
+    }
+    res.send(response);
 };
 
 function removeField(req, res) {

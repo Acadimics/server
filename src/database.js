@@ -88,16 +88,20 @@ const updateFields = async (query, fieldsList) => {
 	return await Field.updateMany(query, fieldsSchema);
 };
 
-function updateField(query, field) {
-	console.log("updateField");
-	console.log(field.requirements);
-	console.log("query", query);
-
-	var updateField = { "$set": { "requirements": field.requirements } };
-
-	Field.updateOne(query, updateField).then((docs) => {
-
-	}).catch((err) => { console.log(err) });
+const updateField = async (query, field) => {
+	var updateField = {};
+	if (field.requirements) {
+		updateField = {
+			"$set": { requirements: field.requirements },
+			"$set": { faculty: field.faculty }
+		};
+	}
+	else {
+		updateField = {
+			"$set": { faculty: field.faculty }
+		};
+	}
+	return await Field.updateMany(query, updateField)
 };
 
 function removeFieldInstitutions(fieldKey, institutionsNotToRemoveList) {
