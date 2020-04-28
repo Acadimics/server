@@ -6,6 +6,7 @@ const Logger = require('./logger');
 const db = require('./database.js');
 const Network = require('./Network.js');
 const FieldId = require('./fieldId');
+const Field = require('./field');
 
 const TAG = "Fields";
 
@@ -25,20 +26,22 @@ function createFields(req, res) {
         newFieldId.fieldKey = fieldKey;
 
         db.createFieldKey(newFieldId)
-            .then(() => {
+            .then((docs) => {
                 var fieldsList = [];
-                institutions.forEach((item) => {
-                    const newField = new Field();
+
+                institutions.forEach(item => {
+                    console.log("item:", item);
+                    var newField = new Field();
                     newField.name = name;
                     newField.institutionId = item.institutionId;
                     newField.fieldKey = fieldKey;
                     newField.requirements = item.requirements;
                     newField.faculty = item.faculty;
-
                     fieldsList.push(newField);
                 });
 
-                db.createFields(arr).then(() => {
+                db.createFields(fieldsList).then((col) => {
+                    console.log("COL: ", col);
                     res.send({
                         "fieldKey": fieldKey
                     });

@@ -67,7 +67,7 @@ function getInstitutionsList(query, successFunc, failureFunc) {
 
 // Fields
 const createFieldKey = async (newFieldId) =>
-	await FieldId.create(newFieldId)
+	await FieldId.create(newFieldId);
 
 const removeFieldKey = async (query) =>
 	await FieldId.deleteMany(query);
@@ -172,6 +172,31 @@ const setBagruts = async (bagruts) =>
 
 const getBagruts = () =>
 	Bagruts.find({});
+
+function search(query) {
+	console.log("query:", query);
+
+	Field.aggregate([
+		{ $match: { name: { $regex: query, $options: "i" } } },
+		{
+			$lookup: {
+				from: "Institutions",
+				localField: "institutionId",
+				foreignField: "_id",
+				as: "myJoin"
+			}
+		}
+	])
+		.then((docs) => {
+			console.log(docs);
+
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+};
+
+// search("הנדס");
 
 // Exports
 module.exports.createInstitution = createInstitution;
