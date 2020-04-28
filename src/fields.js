@@ -22,7 +22,7 @@ function createFields(req, res) {
 
         const newFieldId = new FieldId();
         newFieldId.name = name;
-        newFieldId.fieldKey = newDocument.fieldKey;
+        newFieldId.fieldKey = fieldKey;
 
         db.createFieldKey(newFieldId)
             .then(() => {
