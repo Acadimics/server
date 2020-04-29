@@ -10,11 +10,13 @@ const institutions = require('./institutions.js');
 const fields = require('./fields.js');
 const constraints = require('./constraints.js');
 const bagruts = require('./bagruts.js');
+const search = require('./search.js');
 
 app.use('/institutions', institutions);
 app.use('/fields', fields);
 app.use('/constraints', constraints);
 app.use('/bagruts', bagruts);
+app.use('/search', search);
 
 function main(req, res) {
   console.log('recevied post method');

@@ -57,11 +57,14 @@ function createFields(req, res) {
 
 function updateFields(req, res) {
     var body = req.body;
-    Logger.debug(TAG, "updateFields", body);
     var fieldKey = body.fieldKey;
     var institutions = body.institutions;
     var faculty = body.faculty;
-    var updateInstitutions = body.updateInstitutions;
+    var updateInstitutions = true;
+
+    if (body.updateInstitutions) {
+        updateInstitutions = body.updateInstitutions;
+    }
 
     if (!fieldKey) {
         res.code = Network.ERROR_NO_FIELD_KEY;
@@ -80,6 +83,7 @@ function updateFields(req, res) {
 
             updateField.requirements = item.requirements;
             updateField.faculty = faculty;
+            Logger.debug(TAG, "updateField", updateField);
 
             db.updateField(query, updateField)
                 .then((doc) => {

@@ -10,7 +10,8 @@ var FieldSchema = new Schema(
         requirements: {
             constraints: [{
                 constraintId: { type: String, required: true },
-                value: { type: String, required: true }
+                value: { type: String, required: true },
+                units: { type: Number }
             }]
         }
     },

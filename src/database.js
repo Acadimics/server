@@ -81,8 +81,8 @@ const updateField = async (query, field) => {
 	var updateField = {};
 	if (field.requirements) {
 		updateField = {
-			"$set": { requirements: field.requirements },
-			"$set": { faculty: field.faculty }
+			"$set": { requirements: field.requirements }
+			// "$set": { faculty: field.faculty }
 		};
 	}
 	else {
@@ -162,33 +162,25 @@ const setBagruts = async (bagruts) =>
 const getBagruts = () =>
 	Bagruts.find({});
 
-function search(query) {
-	console.log("query:", query);
-	var arr = getAllSubstrings(query);
-	console.log(arr);
-
-	Field.aggregate([
-		{ $match: { name: { $in: arr } } },
+const search = async (institution, field) => {
+	return await Field.aggregate([
+		// { $match: { name: { $in: arr } } },
 		// { $match: { name: { $regex: query, $options: "i" } } },
+		{ $match: { name: field } },
 		{
 			$lookup: {
 				from: "Institutions",
-				localField: "institutionId",
-				foreignField: "_id",
+				let: { institutionName: "$name" },
+				pipeline: [
+					{ $match: { name: field } }
+					// { $project: { institutionName: "$institutionName" } }
+				],
+				// localField: "institutionId",
+				// foreignField: "_id",
 				as: "myJoin"
 			}
 		}
-	])
-		.then((docs) => {
-			console.log(
-				{
-					count: docs.length,
-					items: docs
-				});
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+	]);
 };
 
 function getAllSubstrings(str) {
@@ -236,3 +228,5 @@ module.exports.getConstraintsList = getConstraintsList;
 
 module.exports.setBagruts = setBagruts;
 module.exports.getBagruts = getBagruts;
+
+module.exports.search = search;
