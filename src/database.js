@@ -81,8 +81,7 @@ const updateField = async (query, field) => {
 	var updateField = {};
 	if (field.requirements) {
 		updateField = {
-			"$set": { requirements: field.requirements }
-			// "$set": { faculty: field.faculty }
+			"$set": { requirements: field.requirements, faculty: field.faculty }
 		};
 	}
 	else {
