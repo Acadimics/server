@@ -70,7 +70,9 @@ const createFields = async (fieldsList) =>
 const updateFields = async (query, fieldsList) => {
 	var fieldsSchema = [];
 	fieldsList.forEach(element => {
-		var updateField = { "$set": { "requirements": element.requirements } };
+		var updateField = {
+			$set: { requirements: element.requirements, faculty: element.faculty }
+		};
 		fieldsSchema.push(updateField);
 	});
 
@@ -81,7 +83,7 @@ const updateField = async (query, field) => {
 	var updateField = {};
 	if (field.requirements) {
 		updateField = {
-			"$set": { requirements: field.requirements, faculty: field.faculty }
+			$set: { requirements: field.requirements, faculty: field.faculty }
 		};
 	}
 	else {
@@ -171,12 +173,21 @@ const search = async (institution, field) => {
 				from: "Institutions",
 				let: { institutionName: "$name" },
 				pipeline: [
-					{ $match: { name: field } }
+					{ $match: { name: institution } },
 					// { $project: { institutionName: "$institutionName" } }
 				],
 				// localField: "institutionId",
 				// foreignField: "_id",
+
 				as: "myJoin"
+			}
+		},
+		{
+			$replaceRoot: { newRoot: { $mergeObjects: [{ a: 0 }, "$$ROOT"] } }
+		},
+		{
+			$project: {
+				requirements: false
 			}
 		}
 	]);

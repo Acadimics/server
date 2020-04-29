@@ -16,7 +16,10 @@ const search = (req, res) => {
     db.search(institution, field)
         .then((docs) => {
             // Logger.debug(TAG, "search", docs);
-            res.send(docs);
+            res.send({
+                count: docs.length,
+                items: docs
+            });
         })
         .catch((err) => {
             Logger.error(TAG, "search", err);
