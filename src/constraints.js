@@ -9,13 +9,13 @@ constraints.use(bodyParser.json());
 
 function addConstraint(req, res) {
     var body = req.body;
-    Logger.debug(TAG, "addConstraint", body);
 
     var newConstraint = {};
     newConstraint.description = body.description;
     newConstraint.scoop = body.scoop;
     newConstraint.subjectId = body.subjectId;
 
+    Logger.debug(TAG, "addConstraint", newConstraint);
     db.createConstraint(newConstraint).then((doc) => {
         res.send(doc);
     }).catch((err) => {

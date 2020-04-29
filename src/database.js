@@ -27,22 +27,11 @@ db.once('open', function () {
 
 
 // Institutions
-const createInstitution = async (newDocument) => {
-	const newInstitution = new Institution();
-	newInstitution.name = newDocument.name;
-	newInstitution.locations = newDocument.locations;
-	newInstitution.logo = newDocument.logo;
-	newInstitution.type = newDocument.type;
+const createInstitution = async (newInstitution) =>
+	await Institution.create(newInstitution);
 
-	return await Institution.create(newInstitution);
-};
-
-const updateInstitutions = async (id, newData) => {
-	Logger.debug(TAG, "updateInstitutions", `id: ${id}`, newData);
-	var query = { _id: id };
-
-	return await Institution.updateOne(query, { $set: newData });
-};
+const updateInstitutions = async (query, institution) =>
+	await Institution.updateOne(query, institution);
 
 const deleteInstitutions = async (id) => {
 	Logger.debug(TAG, "deleteInstitutions", `id: ${id}`);
@@ -175,9 +164,12 @@ const getBagruts = () =>
 
 function search(query) {
 	console.log("query:", query);
+	var arr = getAllSubstrings(query);
+	console.log(arr);
 
 	Field.aggregate([
-		{ $match: { name: { $regex: query, $options: "i" } } },
+		{ $match: { name: { $in: arr } } },
+		// { $match: { name: { $regex: query, $options: "i" } } },
 		{
 			$lookup: {
 				from: "Institutions",
@@ -188,13 +180,34 @@ function search(query) {
 		}
 	])
 		.then((docs) => {
-			console.log(docs);
-
+			console.log(
+				{
+					count: docs.length,
+					items: docs
+				});
 		})
 		.catch((err) => {
 			console.log(err);
 		});
 };
+
+function getAllSubstrings(str) {
+	var i, j, result = [];
+	var newSubstring = "";
+
+	for (i = 0; i < str.length; i++) {
+		for (j = i + 1; j < str.length + 1; j++) {
+			newSubstring = str.slice(i, j);
+			if (newSubstring.length >= 3) {
+				result.push(newSubstring);
+			}
+		}
+	}
+	return result;
+}
+
+// var theString = 'somerandomword';
+// console.log(getAllSubstrings(theString));
 
 // search("הנדס");
 

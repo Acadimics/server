@@ -4,20 +4,24 @@ const bodyParser = require('body-parser');
 const Logger = require('./logger');
 const db = require('./database.js');
 const Network = require('./Network.js');
+const Institution = require('./institution');
 const TAG = "Institutions";
 institutions.use(bodyParser.json());
 
-function createInstitution(req, res) {
+const createInstitution = (req, res) => {
     var body = req.body;
-    Logger.debug(TAG, "createInstitution", body);
 
-    var query = {};
-    query['name'] = body.name;
+    const newInstitution = new Institution();
+    newInstitution.name = body.name;
+    newInstitution.locations = body.locations;
+    newInstitution.logo = body.logo;
+    newInstitution.type = body.type;
 
-    db.createInstitution(body)
+    Logger.debug(TAG, "createInstitution", newInstitution);
+    db.createInstitution(newInstitution)
         .then((doc) => {
             res.send({
-                "_id": doc._id
+                _id: doc._id
             });
         }).catch((err) => {
             res.status(Network.CODE_ERROR);
@@ -29,19 +33,22 @@ function updateInstitutions(req, res) {
     var body = req.body;
     Logger.debug(TAG, "updateInstitutions", body);
 
+    var query = { _id: body.id };
+
     var newData = {};
     newData['name'] = body.name;
     newData['locations'] = body.locations;
     newData['logo'] = body.logo;
+    newData['type'] = body.type;
 
-    db.updateInstitutions(body.id, newData)
+    db.updateInstitutions(query, newData)
         .then(() => {
             res.status(Network.CODE_OK);
             res.send({ _id: body.id });
         }).catch((err) => {
             res.status(Network.CODE_ERROR);
             res.send(err);
-        })
+        });
 };
 
 function deleteInstitutions(req, res) {

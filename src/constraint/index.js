@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-const scoopsValidator = (v) => ["Bagrout", "Psychometry"].indexOf(v) !== -1
+const scoopsValidator = (v) => ["Bagrut", "Psychometry"].indexOf(v) !== -1
 
 var ConstraintSchema = new Schema(
     {
